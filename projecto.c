@@ -1,4 +1,7 @@
-/* <<< Joao Daniel Silva 86445, Francisco Sousa, 86416 >>> */
+/****************************************************************************/
+/*********** Joao Daniel Silva 86445, Francisco Sousa, 86416 ****************/
+/****************************************************************************/
+
 #include <stdio.h>
 #include <string.h>
 
@@ -34,7 +37,7 @@ typedef struct {
 Mensagem forum[MAXMSGS]; //criacao do forum
 int counterAtividade[MAXUSERS+1]; //counterAtividade guarda o n de msgs por user
 int id = 0, noMsg = 0;
-char input[148 MAXCHARS+MAXDIGS+1+3];
+char input[MAXCHARS+MAXDIGS+1+3];
 char msg[MAXCHARS+1];
 
 
@@ -85,7 +88,7 @@ void addMsg() {
 	printf("msg=%s id=%d compr=%d atividade=%d\n", forum[noMsg].frase, forum[noMsg].id, forum[noMsg].compr, counterAtividade[forum[noMsg].id]);
 	noMsg++; //incrementa o numero de mensagens no forum
 	id = 0; //reset da variavel id
-	msg[0] = '\0'; //reset da string da mensagem;
+	msg[0] = '\0'; //reset da string da mensagem
 };
 
 int leId() {
@@ -97,7 +100,7 @@ int leId() {
 		id += input[i]-'0'; // ^
 	}
 	printf("id = %d\n",id);
-	return i+1; //retorna posicao com a qual o leMsg irah comecar
+	return i+1; //retorna posicao com a qual o leMsg ira' comecar
 };
 
 int leMsg(int posIni) {
