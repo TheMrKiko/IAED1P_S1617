@@ -1,0 +1,7 @@
+A 5 fds
+A 2 as
+A 3 gh
+A 4 we
+A 1 fds
+S
+X
