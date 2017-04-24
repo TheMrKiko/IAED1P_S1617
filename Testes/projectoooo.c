@@ -45,7 +45,7 @@ int main() {
 	int done; //variavel de controlo
 	char command; //variavel que guarda o commando de cada input
 	limpaVetor(counterAtividade,MAXUSERS); //limpa o vetor que guarda a informacao do numero de mensagens de cada id
-	done = 0; 
+	done = 0;
 	while(!done) {
 		leLinha();
 		command = input[0];
@@ -91,18 +91,18 @@ void leLinha() {
 	for(i=0;i<147 &&(c=getchar()) != EOF && c != '\n';i++)
 		input[i] = c;
 	input[i]='\0';
-	//printf("%s\n",input);	
+	//printf("%s\n",input);
 }
 
 int leId() {
 	int i;
 	//como o numero do user comeca sempre na posicao 2, percorre o vetor no maximo 3 vezes e enquanto os carateres
 	//digitados forem numeros, armazenando o numero do user na variavel id
-	for(i=2;i<MAXDIGS+2 && '0'<=input[i] && input[i]<='9';i++) { 
+	for(i=2;i<MAXDIGS+2 && '0'<=input[i] && input[i]<='9';i++) {
 			id = id *10; //conversao do numero de ASCII para int
 			id += input[i]-'0'; // ^
 	}
-	printf("id = %d\n",id);
+	//printf("id = %d\n",id);
 	return i+1; //retorna posicao com a qual o leMsg irah comecar
 
 };
@@ -115,7 +115,7 @@ int leMsg(int posIni) {
 		//os indices encontram se desfazados pois a var i comeca num valor diferente de 0
 	};
 	msg[i-posIni]='\0'; //coloca se o \0 na ultima posicao da string
-	printf("msg= %s\n",msg);
+	//printf("msg= %s\n",msg);
 	return i-posIni; //retorna o comprimento da string
 };
 
@@ -127,7 +127,7 @@ void addMsg() {
 	strcpy(forum[noMsg].frase,msg); //guarda a frase no forum
 	forum[noMsg].compr = compr; //guarda o comprimento da frase
 	counterAtividade[forum[noMsg].id]++; //incrementa a atividade do vetor
-	printf("msg=%s id=%d compr=%d atividade=%d\n",forum[noMsg].frase,forum[noMsg].id,forum[noMsg].compr,counterAtividade[forum[noMsg].id]);
+	//printf("msg=%s id=%d compr=%d atividade=%d\n",forum[noMsg].frase,forum[noMsg].id,forum[noMsg].compr,counterAtividade[forum[noMsg].id]);
 	noMsg++; //incrementa o numero de mensagens no forum
 	id = 0; //reset da variavel id
 	msg[0] = '\0'; //reset da string da mensagem;
@@ -146,7 +146,7 @@ void msgUser() {
 	leId();
 	printf("*MESSAGES FROM USER:%d\n",id);
 	for(i=0;i<noMsg;i++) { //procura no vetor forum pelas mensagens do utilizador desejado
-		if(forum[i].id==id) { 
+		if(forum[i].id==id) {
 			printf("%s\n",forum[i].frase);
 		}
 	}
@@ -167,7 +167,7 @@ void longestMsg() {
 void mostAtivityUser() {
 	int i,max=0,user=0;
 	for(i=0;i<MAXUSERS;i++) { //procura no vetor counter qual das posicoes q identifica cada user tem o valor maior
-		if(counterAtividade[forum[i].id]>max) { 
+		if(counterAtividade[forum[i].id]>max) {
 			max = counterAtividade[forum[i].id];  //guarda o valor da atividade
 			user = forum[i].id; //guarda o numero do user
 		}
@@ -183,14 +183,13 @@ void copiaForum(Mensagem a[]) {
 	}
 }
 
-void sort(Mensagem a[], int l, int r) 
-{  
- 	int i,j;
-  	Mensagem v;
-  	for (i = l+1; i <= r; i++) { 
+void sort(Mensagem a[], int l, int r) {
+	int i,j;
+	Mensagem v;
+	for (i = l+1; i <= r; i++) {
 		strcpy(v.frase,a[i].frase);
 		v.id= a[i].id;
-		j = i-1; 
+		j = i-1;
 		while ( j >= l &&less(v.frase, a[j].frase)) { //insertion sort normal para as mensagens p ordem alfabetica
 			strcpy(a[j+1].frase,a[j].frase); //troca de msgs e id
 			a[j+1].id = a[j].id;
