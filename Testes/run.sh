@@ -10,5 +10,5 @@ do
   	diff -q "${arg%.*}".out "${arg%.*}".out.bla
 done
 
-rm *.bla
+#rm *.bla
 rm bla
