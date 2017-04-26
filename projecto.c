@@ -32,7 +32,7 @@ void sortAlgoritmo(int aux[], int primsort);
 int sortComparacao(int v, int aux_j, int primsort);
 void listaMsgsOrd(int ord[]);
 void limpaVetor(int v[], int tam);
-//VER ABSTRACAO E IDIOMA E ORDEM DAS FUNCOES
+//VER ABSTRACAO E IDIOMA E ORDEM DAS FUNCOES, 1000 users 3 digitos????
 
 /****************************************************************************/
 /*********** Declaracao da estrutura mensagem ****************/
@@ -109,6 +109,7 @@ void leMsg(char str[]){
 	};
 };
 
+/* A */
 void adicionaMsg() {
 	forum[noMsg].id = leID();
 	leMsg(forum[noMsg].frase);
@@ -119,6 +120,7 @@ void adicionaMsg() {
 	noMsg++;
 };
 
+/* L */
 void listaMsgs() {
 	int i;
 	printf("*TOTAL MESSAGES:%d\n", noMsg);
@@ -127,6 +129,7 @@ void listaMsgs() {
 	};
 };
 
+/* U */
 void listaMsgsID() {
 	int i, id;
 	id = leID();
@@ -138,6 +141,7 @@ void listaMsgsID() {
 	};
 };
 
+/* O */
 void maiorMsg() { //NAO FUNCIONA BEM
 	int i,max=0;
 	for(i=0;i<noMsg;i++) { //procura a frase com o comprimento maior
@@ -150,27 +154,28 @@ void maiorMsg() { //NAO FUNCIONA BEM
 	};
 };
 
-void userMaisAtivo() {//INICIO DO VETOR DA ERRO
+/* T */
+void userMaisAtivo() {
 	int u, j = 0, max = 1, users[noMsg];
 	for (u = 0; u < MAXUSERS; u++) { //procura no vetor contador o user mais ativo
 		if (contadorAtiv[u] > max) { //se o max for maior que os outros, guarda de novo
 			j = 0;
 			max = contadorAtiv[u];
-			users[j] = u;
-		} else if (contadorAtiv[u] == max && u!=users[j]){ //se for igual mas
-			users[++j] = u; //de um user diferente, regista noutra posicao
+			users[j++] = u;
+		} else if (contadorAtiv[u] == max){ //se for igual
+			users[j++] = u; //regista noutra posicao
 		};
 	};
-	for (u = 0; u <= j; u++) {
+	for (u = 0; u < j; u++) {
 		printf("*MOST ACTIVE USER:%d:%d\n",users[u],max);
 	};
 };
 
 //Preenche o vetor v de tamanho tam com zeros
 void limpaVetor(int v[], int tam) {
-	int i;
-	for(i=0; i<tam; i++) {
-		v[i]=0;
+	int i = 0;
+	while (i <= tam) {
+		v[i++] = 0;
 	};
 };
 
@@ -208,6 +213,7 @@ void sortAlgoritmo(int aux[], int primsort) {
     };
 };
 
+/* S */
 void ordenaMsg() {
 	int aux[noMsg], i = 0;
 	//Cria um vetor auxiliar de numeros ordenados. Cada numero eh o indice de uma
