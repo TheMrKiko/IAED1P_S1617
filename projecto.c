@@ -36,8 +36,8 @@ void ordenaMsg();
 void sortAlgoritmo(int aux[], int primsort);
 void listaMsgsOrd(int ord[]);
 void limpaVetor(int v[], int tam);
-int sortComparacao(int v, int aux_j, int primsort);
 void contaPalavra();
+int sortComparacao(int v, int aux_j, int primsort);
 int limitePalavra(char c);
 
 
