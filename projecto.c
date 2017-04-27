@@ -1,82 +1,73 @@
 /****************************************************************************/
 /************ Joao Daniel Silva 86445, Francisco Sousa 86416 ****************/
+/********************************* Grupo 15 *********************************/
 /****************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-//  _|_|_|                                  _|                            _|
-//_|          _|_|    _|_|_|      _|_|_|  _|_|_|_|    _|_|_|  _|_|_|    _|_|_|_|
-//_|        _|    _|  _|    _|  _|_|        _|      _|    _|  _|    _|    _|
-//_|        _|    _|  _|    _|      _|_|    _|      _|    _|  _|    _|    _|
-//  _|_|_|    _|_|    _|    _|  _|_|_|        _|_|    _|_|_|  _|    _|      _|_|
 /****************************************************************************/
 /**************************** Definicao de constantes ***********************/
 /****************************************************************************/
+
 #define MAXCHARS 140
 #define MAXMSGS 10000
 #define MAXUSERS 1000
 #define MAXDIGS 3
 #define msgFrase(A) forum[A].frase
 #define msgID(A) forum[A].id
-#define less(A, B) strcmp(A, B) < 0
+#define msgCompr(A) forum[A].compr
+#define menor(A, B) strcmp(A, B) < 0
 
-//_|_|_|                          _|                  _|      _|
-//_|    _|  _|  _|_|    _|_|    _|_|_|_|    _|_|    _|_|_|_|      _|_|_|
-//_|_|_|    _|_|      _|    _|    _|      _|    _|    _|      _|  _|    _|
-//_|        _|        _|    _|    _|      _|    _|    _|      _|  _|    _|
-//_|        _|          _|_|        _|_|    _|_|        _|_|  _|  _|_|_|
-//                                                                _|
-//                                                                _|
+
 /****************************************************************************/
 /*************************** Prototipo de funcoes ***************************/
 /****************************************************************************/
-int leID();//le o numero do user do input
-void limpaVetor(int v[],int tamanho); //limpa conteudo do vetor
-void adicionaMsg(); //add mensagem ao forum
+
+int leID();
 int leMsg(char str[]);
+void adicionaMsg();
+void listaMsgs();
+void listaMsgsID();
+void maiorMsg();
+void userMaisAtivo();
 void ordenaMsg();
-void listaMsgs(); //lista todas as mensagens ja submetidas
-void listaMsgsID(); //dado um utilizador, imprime todas as frases escritas por ele
-void maiorMsg(); //procura a frase mais comprida no forum e imprime-a
-void userMaisAtivo(); //imprime no ecra o id do user
 void sortAlgoritmo(int aux[], int primsort);
-int sortComparacao(int v, int aux_j, int primsort);
 void listaMsgsOrd(int ord[]);
 void limpaVetor(int v[], int tam);
-//VER ABSTRACAO E ORDEM DAS FUNCOES
+int sortComparacao(int v, int aux_j, int primsort);
+
 
 /****************************************************************************/
-/********************* Declaracao da estrutura mensagem *********************/
+/********************* Declaracao da estrutura Mensagem *********************/
 /****************************************************************************/
+
 typedef struct {
 	char frase[MAXCHARS+1];
 	int id;
 	int compr;
 } Mensagem;
 
+
 /*****************************************************************************/
 /********************** Declaracao de variaveis globais **********************/
 /*****************************************************************************/
-Mensagem forum[MAXMSGS]; //criacao do forum
+
+Mensagem forum[MAXMSGS]; //criar o forum
 int contadorAtiv[MAXUSERS+1]; //contadorAtiv guarda o n de msgs por user
 int noMsg = 0;
-char msg[MAXCHARS+1];
 
-//_|_|_|_|
-//_|        _|    _|  _|_|_|      _|_|_|    _|_|      _|_|      _|_|_|
-//_|_|_|    _|    _|  _|    _|  _|        _|    _|  _|_|_|_|  _|_|
-//_|        _|    _|  _|    _|  _|        _|    _|  _|            _|_|
-//_|          _|_|_|  _|    _|    _|_|_|    _|_|      _|_|_|  _|_|_|
+
 /****************************************************************************/
 /*********************************** Main ***********************************/
 /****************************************************************************/
+
 int main() {
 	int done = 0; //variavel de controlo
-	char command; //variavel que guarda o commando de cada input
-	limpaVetor(contadorAtiv, MAXUSERS); //limpa o vetor que guarda a informacao do numero de mensagens de cada id
-	while(!done) {
-		scanf("\n%c", &command);
+	char command;
+	limpaVetor(contadorAtiv, MAXUSERS); //limpa o vetor que guarda o numero de mensagens de cada id
+	while (!done) {
+		scanf("\n%c", &command); //le primeiro caracter introduzido
 		switch (command) {
 			case 'A':
 				adicionaMsg(); //adiciona uma mensagem ao forum
@@ -91,10 +82,9 @@ int main() {
 				maiorMsg(); //procura as mensagens mais longas
 				break;
 			case 'T':
-				if (noMsg) { //se houver mensagens
-					userMaisAtivo();
-				};
+				if (noMsg) userMaisAtivo(); //se houver mensagens
 				break;
+
 			case 'S':
 				ordenaMsg(); //ordena as mensagens
 				break;
@@ -109,14 +99,19 @@ int main() {
 	return 0;
 };
 
+/******************************************************************************/
+/***************************** Funcoes de Leitura *****************************/
+/******************************************************************************/
+
 int leID() {
-	char idstr[4], c; int i = 0;
-	getchar(); //limpar espaço
-	while ('0' <= (c = getchar()) && c <= '9' && i<3) {
-		idstr[i++] = c;
+	char id_str[4], c; int i = 0;
+	getchar(); //saltar espaço
+	while ('0' <= (c = getchar()) && c <= '9' && i < 3) {
+		//le os digitos para um vetor de caracteres
+		id_str[i++] = c;
 	};
-	idstr[i] = '\0';
-	return atoi(idstr);
+	id_str[i] = '\0';
+	return atoi(id_str); //converte o vetor num inteiro
 };
 
 int leMsg(char str[]) {
@@ -127,113 +122,105 @@ int leMsg(char str[]) {
 	return i;
 };
 
-/* A */
+
+/*****************************************************************************/
+/************************************* A *************************************/
+/*****************************************************************************/
+
 void adicionaMsg() {
-	forum[noMsg].id = leID();
-	forum[noMsg].compr = leMsg(forum[noMsg].frase);
-    //printf("int: %d\n", forum[noMsg].id);
-    //printf("msg: %s\n", forum[noMsg].frase);
+	msgID(noMsg) = leID();
+	msgCompr(noMsg) = leMsg(msgFrase(noMsg));
 	//pede o id do utilizador e a mensagem e adiciona ah estrutura
-	contadorAtiv[forum[noMsg].id]++;
+	contadorAtiv[msgID(noMsg)]++;
 	noMsg++;
 };
 
-/* L */
+/*****************************************************************************/
+/************************************* L *************************************/
+/*****************************************************************************/
+
 void listaMsgs() {
-	int i;
+	int m;
 	printf("*TOTAL MESSAGES:%d\n", noMsg);
-	for (i = 0; i < noMsg; i++) { //percorre o vetor que armazena as mensagens e imprime as no ecra
-		printf("%d:%s\n", forum[i].id, forum[i].frase);
+	for (m = 0; m < noMsg; m++) {
+		//percorre o forum e imprime as mensagens no ecra
+		printf("%d:%s\n", msgID(m), msgFrase(m));
 	};
 };
 
-/* U */
+
+/*****************************************************************************/
+/************************************* U *************************************/
+/*****************************************************************************/
+
 void listaMsgsID() {
-	int i, id;
-	id = leID();
+	int m, id = leID();
 	printf("*MESSAGES FROM USER:%d\n", id);
-	for (i = 0; i < noMsg; i++) { //procura no vetor forum pelas mensagens do utilizador desejado
-		if(forum[i].id == id) {
-			printf("%s\n", forum[i].frase);
+	for (m = 0; m < noMsg; m++) {
+		//procura no forum pelas mensagens do utilizador desejado
+		if (msgID(m) == id) {
+			printf("%s\n", msgFrase(m));
 		};
 	};
 };
 
-/* O */
+
+/*****************************************************************************/
+/************************************* O *************************************/
+/*****************************************************************************/
+
 void maiorMsg() {
-	int i, max = 0;
-	for (i = 0; i < noMsg; i++) { //procura a frase com o comprimento maior
-		if (forum[i].compr > max) {
-			max = forum[i].compr;
+	int m, max = 0;
+	for (m = 0; m < noMsg; m++) {
+		//procura a mensagem com o comprimento maior
+		if (msgCompr(m) > max) {
+			max = msgCompr(m);
 		};
 	};
-	for (i = 0; i < noMsg; i++) { //imprime todas as frases que tenham esse comprimento
-		if(forum[i].compr == max) {
-			printf("*LONGEST SENTENCE:%d:%s\n", forum[i].id, forum[i].frase);
+	for (m = 0; m < noMsg; m++) {
+		//imprime todas as mensagens que tenham esse comprimento
+		if (msgCompr(m) == max) {
+			printf("*LONGEST SENTENCE:%d:%s\n", msgID(m), msgFrase(m));
 		};
 	};
 };
 
-/* T */
+
+/*****************************************************************************/
+/************************************* T *************************************/
+/*****************************************************************************/
+
 void userMaisAtivo() {
-	int u, j = 0, max = 1, users[noMsg];
-	for (u = 0; u < MAXUSERS; u++) { //procura no vetor contador o user mais ativo
-		if (contadorAtiv[u] > max) { //se o max for maior que os outros, guarda de novo
-			j = 0;
+	int u, lim = 0, max = 1, users[noMsg];
+	for (u = 0; u < MAXUSERS; u++) {
+		//procura no vetor contador o user mais ativo
+		if (contadorAtiv[u] > max) {
+			//se o max for maior que os outros, guarda no inicio dos users
+			lim = 0;
 			max = contadorAtiv[u];
-			users[j++] = u;
-		} else if (contadorAtiv[u] == max) { //se for igual
-			users[j++] = u; //regista noutra posicao
+			users[lim++] = u;
+		} else if (contadorAtiv[u] == max) {
+			//se for igual, guarda na posicao seguinte
+			users[lim++] = u;
 		};
 	};
-	for (u = 0; u < j; u++) {
+	for (u = 0; u < lim; u++) {
 		printf("*MOST ACTIVE USER:%d:%d\n", users[u], max);
 	};
 };
 
-//Preenche o vetor v de tamanho tam com zeros
-void limpaVetor(int v[], int tam) {
-	int i = 0;
-	while (i <= tam) {
-		v[i++] = 0;
-	};
-};
 
-void listaMsgsOrd(int ord[]) {
-	//imprime as mensagens do forum pela ordem ord
-    int i;
-	printf("*SORTED MESSAGES:%d\n", noMsg);
-    for (i = 0; i < noMsg; i++) {
-        printf("%d:%s\n", forum[ord[i]].id, forum[ord[i]].frase);
-    };
-};
+/*****************************************************************************/
+/************************************* C *************************************/
+/*****************************************************************************/
 
-int sortComparacao(int v, int aux_j, int primsort) {
-	//se for a primeira vez que corre o sort, compara ids
-	//se for a segunda, compara as mensagens
-	if (primsort) {
-		return forum[v].id < forum[aux_j].id;
-	} else {
-		return less(forum[v].frase, forum[aux_j].frase);
-	};
-};
+//void bla
 
-void sortAlgoritmo(int aux[], int primsort) {
-	int i, j;
-	//Dispoe os numeros do vetor auxiliar de forma a que as Mensagem's
-	//respectivas estejam ordenadas
-    for (i = 1; i <= noMsg-1; i++) {
-        int v = aux[i];
-        j = i-1;
-        while (j >= 0 && sortComparacao(v, aux[j], primsort)) {
-            aux[j+1] = aux[j];
-            j--;
-        };
-        aux[j+1] = v;
-    };
-};
 
-/* S */
+/*****************************************************************************/
+/************************************* S *************************************/
+/*****************************************************************************/
+
 void ordenaMsg() {
 	int aux[noMsg], i = 0;
 	//Cria um vetor auxiliar de numeros ordenados. Cada numero eh o indice de uma
@@ -247,4 +234,46 @@ void ordenaMsg() {
 	sortAlgoritmo(aux, 1);
 	sortAlgoritmo(aux, 0);
 	listaMsgsOrd(aux);
+};
+
+void sortAlgoritmo(int aux[], int primsort) {
+	int i, j;
+	//Dispoe os numeros do vetor auxiliar de forma a que as Mensagem's
+	//respectivas estejam ordenadas
+	for (i = 1; i <= noMsg-1; i++) {
+		int v = aux[i];
+		j = i-1;
+		while (j >= 0 && sortComparacao(v, aux[j], primsort)) {
+			aux[j+1] = aux[j];
+			j--;
+		};
+		aux[j+1] = v;
+	};
+};
+
+int sortComparacao(int v, int aux_j, int primsort) {
+	//se for a primeira vez que corre o sort, compara ids
+	//se for a segunda, compara as mensagens
+	if (primsort) {
+		return msgID(v) < msgID(aux_j);
+	} else {
+		return menor(msgFrase(v), msgFrase(aux_j));
+	};
+};
+
+void listaMsgsOrd(int ord[]) {
+	//imprime as mensagens do forum pela ordem ord
+	int i;
+	printf("*SORTED MESSAGES:%d\n", noMsg);
+	for (i = 0; i < noMsg; i++) {
+		printf("%d:%s\n", msgID(ord[i]), msgFrase(ord[i]));
+	};
+};
+
+void limpaVetor(int v[], int tam) {
+	//Preenche o vetor v de tamanho tam com zeros
+	int i = 0;
+	while (i <= tam) {
+		v[i++] = 0;
+	};
 };
