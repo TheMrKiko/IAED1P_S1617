@@ -1,5 +1,6 @@
 /****************************************************************************/
 /************ Joao Daniel Silva 86445, Francisco Sousa 86416 ****************/
+/********************************* Grupo 15 *********************************/
 /****************************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,6 +18,7 @@
 #define msgID(A) forum[A].id
 #define msgCompr(A) forum[A].compr
 #define menor(A, B) strcmp(A, B) < 0
+#define igual(A, B) strcmp(A, B) == 0
 
 
 /****************************************************************************/
@@ -35,6 +37,8 @@ void sortAlgoritmo(int aux[], int primsort);
 void listaMsgsOrd(int ord[]);
 void limpaVetor(int v[], int tam);
 int sortComparacao(int v, int aux_j, int primsort);
+void contaPalavra();
+int limitePalavra(char c);
 
 
 /****************************************************************************/
@@ -83,7 +87,9 @@ int main() {
 			case 'T':
 				if (noMsg) userMaisAtivo(); //se houver mensagens
 				break;
-
+			case 'C':
+				contaPalavra();
+				break;
 			case 'S':
 				ordenaMsg(); //ordena as mensagens
 				break;
@@ -118,6 +124,7 @@ int leMsg(char str[]) {
 	while ((c = getchar()) != '\n') {
 		str[i++] = c;
 	};
+	str[i] = '\0';
 	return i;
 };
 
@@ -213,7 +220,32 @@ void userMaisAtivo() {
 /************************************* C *************************************/
 /*****************************************************************************/
 
-//void bla
+void contaPalavra() {
+	int m, i = 0, j = 0, contador = 0;
+	char palavra[MAXCHARS+1], str_aux[MAXCHARS+1];
+	getchar(); //saltar o espaco
+	leMsg(palavra);
+	for (m = 0; m < noMsg; m++) {
+		while (msgFrase(m)[i] != '\0'){
+			//percorre-se a mensagem e copia-se palavra a palavra
+			while (!limitePalavra(msgFrase(m)[i])) {
+				str_aux[j++] = msgFrase(m)[i++];
+			};
+			str_aux[j] = '\0';
+			if (igual(str_aux, palavra)) {
+				contador++;
+			};
+			i++;
+			j = 0;
+		};
+		i = 0;
+	};
+	printf("*WORD %s:%d\n", palavra, contador);
+};
+
+int limitePalavra(char c) {
+	return ((c == ' ' || c == '\0' || c == ',' || c == '.'|| c == ';' || c == '\t' || c == '\n') ? 1 : 0);
+};
 
 
 /*****************************************************************************/
@@ -276,3 +308,7 @@ void limpaVetor(int v[], int tam) {
 		v[i++] = 0;
 	};
 };
+
+/*****************************************************************************/
+/************************************* C *************************************/
+/*****************************************************************************/
